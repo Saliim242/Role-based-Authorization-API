@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
-import { hashPassword } from "../utils/password.hash.util.js";
+import { hashPassword, comparePassword } from "../utils/password.hash.util.js";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
@@ -62,5 +63,53 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  res.status(200).json({ status: true, message: "User login Successfully" });
+  try {
+    const { username, password } = req.body;
+
+    // check if the username and password is passed or not
+    if (!username || !password) {
+      return res.status(400).json({
+        status: false,
+        message: "Username and password are required",
+      });
+    }
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(400).json({
+        status: false,
+        message: "User not found",
+      });
+    }
+
+    const isPasswordMatched = await comparePassword(password, user.password);
+
+    if (!isPasswordMatched) {
+      return res.status(400).json({
+        status: false,
+        message: "Incorrect password",
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "User logged in successfully",
+      data: {
+        ...user._doc,
+        password: undefined,
+        token,
+      },
+    });
+  } catch (error) {
+    console.log(error).red.bold;
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
 };
