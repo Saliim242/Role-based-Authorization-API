@@ -1,0 +1,36 @@
+{
+  "name": "role-based-authorization-api",
+  "version": "1.0.0",
+  "description": "AccessGuard is a secure and scalable Role-Based Authorization API designed to manage user access control in modern web applications.",
+  "main": "src/server",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server",
+    "dev": "nodemon src/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saliim242/Role-based-Authorization-API.git"
+  },
+  "keywords": [
+    "Role-Bassed"
+  ],
+  "author": "Salim Abukar Ahmed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Saliim242/Role-based-Authorization-API/issues"
+  },
+  "homepage": "https://github.com/Saliim242/Role-based-Authorization-API#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "colors": "^1.4.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
