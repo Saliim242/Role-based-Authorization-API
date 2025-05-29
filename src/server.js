@@ -6,6 +6,7 @@ import { connectDb } from "../src/config/db.conig.js";
 // Import Routers
 
 import authRouter from "./routers/auth.router.js";
+import userRouter from "./routers/user.route.js";
 
 // config the dotEnv
 
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 //Routers
 
 app.use("/api/auth/", authRouter);
+app.use("/api/users/", userRouter);
 
 // Start the server
 

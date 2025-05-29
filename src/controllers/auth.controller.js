@@ -92,18 +92,49 @@ export const login = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     res.status(200).json({
       status: true,
       message: "User logged in successfully",
       data: {
-        ...user._doc,
-        password: undefined,
+        // ...user._doc,
+        // password: undefined,
         token,
       },
+    });
+  } catch (error) {
+    console.log(error).red.bold;
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+// get All User
+
+export const getAllUser = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    if (!users) {
+      return res.status(400).json({
+        status: false,
+        message: "Users not found",
+      });
+    }
+
+    res.status(200).json({
+      status: true,
+      message: "Users fetched successfully",
+      data: users,
     });
   } catch (error) {
     console.log(error).red.bold;
