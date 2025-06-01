@@ -21,7 +21,7 @@ export const verifyToken = async (req, res, next) => {
       req.user = decodedUser;
       console.log(req.user);
 
-      return next(); // ✅ Add return here to prevent further execution
+      next(); // ✅ Add return here to prevent further execution
     } catch (error) {
       console.log(error);
       return res.status(500).json({
@@ -29,11 +29,16 @@ export const verifyToken = async (req, res, next) => {
         message: error.message,
       });
     }
+  } else {
+    return res.status(401).json({
+      status: false,
+      message: "No token provided, authorization denied",
+    });
   }
 
-  // This line should only run if no valid Bearer token was found
-  return res.status(401).json({
-    status: false,
-    message: "No token, authorization denied",
-  });
+  // // This line should only run if no valid Bearer token was found
+  // return res.status(401).json({
+  //   status: false,
+  //   message: "No token, authorization denied",
+  // });
 };
